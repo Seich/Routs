@@ -47,17 +47,43 @@ class Rout
     public static function get($route, $callback, $settings = null) 
     {
         if($_SERVER['REQUEST_METHOD'] != 'GET') return false; // Ignore request if it's not a get call.
-				
-		$params = self::getParams();
-		
-		$callback($params);
+		self::runCallback($callback, $settings);
    	}
 	
 	/**
-	* This function removes the directory data from the url and gets the parameters.
-	*
-	* @return array returns an array with all the parameters.
-	*/
+	 * This function checks if the called route is the same as the one provided.
+	 *
+	 * @params string $route The route to be checked against the the current script route. 
+	 * @return boolean returns true if the routes are the same.
+	 */
+	function matchRoute($route) {
+	}
+	
+	/**
+	 * This function gets the current url params and if all settings are true, executes the provided callback.
+	 *
+	 * @param callback $callback This function to be executed.
+	 * @param array $settings The conditions on which the function must be executed.
+	 * 
+	 * @return void
+	 */
+	private static function runCallback($callback, $settings) 
+	{
+		$params = self::getParams();
+		
+		if($settings == null) {
+			$callback($params); // If there are no particular settings.		
+		} else {
+			//If all settings are true. Execute callback.
+			//If the setting isn't part of the $_SERVER array throw an error for unknown setting.
+		}
+	}
+	
+	/**
+	 * This function removes the directory data from the url and gets the parameters.
+	 *
+	 * @return array returns an array with all the parameters.
+	 */
 	private static function getParams() 
 	{
 		$params = explode('/', $_SERVER['REQUEST_URI']); // Break up the URL to find the parameters.
@@ -71,5 +97,4 @@ class Rout
 		
 		return $params;		
 	}
-
 }
