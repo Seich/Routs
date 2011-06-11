@@ -47,7 +47,8 @@ class Rout
     public static function get($route, $callback, $settings = null) 
     {
         if($_SERVER['REQUEST_METHOD'] != 'GET') return false; // Ignore request if it's not a get call.
-		self::runCallback($callback, $settings);
+        if(!self::matchRoute($route)) return false; // Ignore request if the route doesn't match.
+		if(!self::runCallback($callback, $settings)) return false; // Return false if the callback couldn't be executed because of settings.
    	}
 	
 	/**
@@ -56,7 +57,30 @@ class Rout
 	 * @params string $route The route to be checked against the the current script route. 
 	 * @return boolean returns true if the routes are the same.
 	 */
-	function matchRoute($route) {
+	private static function matchRoute($route) {
+		switch($route) {
+			case '':
+			case '/':
+				return true;
+				break;
+			default:
+				$route = explode('/', $route);
+				$params = self::getParams();
+				
+				// If the arrays aren't equal in length, they don't match.
+				if(count($route) != count($params)) return false;
+				
+				// compare the route and the params arrays, Checking for wildcards(*);
+				for($i = 0; $i < count($route); $i++) {
+					if($route[$i] == $params[$i] || $route[$i] == '*') {
+						if($i != (count($route) - 1)) continue;
+						else return true;
+					} else {
+						return false;
+					}	
+				}
+				break;
+		}
 	}
 	
 	/**
@@ -74,8 +98,8 @@ class Rout
 		if($settings == null) {
 			$callback($params); // If there are no particular settings.		
 		} else {
-			//If all settings are true. Execute callback.
-			//If the setting isn't part of the $_SERVER array throw an error for unknown setting.
+			//TODO Check settings.			
+			$callback($params);
 		}
 	}
 	
