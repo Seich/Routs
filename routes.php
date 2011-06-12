@@ -48,7 +48,7 @@ class Rout
     {
         if($_SERVER['REQUEST_METHOD'] != 'GET') return false; // Ignore request if it's not a get call.
         if(!self::matchRoute($route)) return false; // Ignore request if the route doesn't match.
-		if(!self::runCallback($callback, $settings)) return false; // Return false if the callback couldn't be executed because of settings.
+		if(!self::runCallback($route, $callback, $settings)) return false; // Return false if the callback couldn't be executed because of settings.
    	}
 	
 	/**
@@ -57,7 +57,8 @@ class Rout
 	 * @params string $route The route to be checked against the the current script route. 
 	 * @return boolean returns true if the routes are the same.
 	 */
-	private static function matchRoute($route) {
+	private static function matchRoute($route) 
+	{
 		switch($route) {
 			case '':
 			case '/':
@@ -91,9 +92,9 @@ class Rout
 	 * 
 	 * @return void
 	 */
-	private static function runCallback($callback, $settings) 
+	private static function runCallback($route, $callback, $settings) 
 	{
-		$params = self::getParams();
+		$params = self::getParams($route);
 		
 		if($settings == null) {
 			$callback($params); // If there are no particular settings.		
@@ -105,10 +106,13 @@ class Rout
 	
 	/**
 	 * This function removes the directory data from the url and gets the parameters.
+	 * If a route is provided it'll only return the values where wildcards are located.
 	 *
+	 * @param string $route The route to be compared with the params.
+	 * 
 	 * @return array returns an array with all the parameters.
 	 */
-	private static function getParams() 
+	private static function getParams($route = null) 
 	{
 		$params = explode('/', $_SERVER['REQUEST_URI']); // Break up the URL to find the parameters.
 		
@@ -119,6 +123,19 @@ class Rout
 			}
 		}
 		
-		return $params;		
+		if($route == null) {
+			return $params;
+		} else {
+			$route = explode('/', $route);
+			$new_params = array();
+			//Checks for wildcards and only returns those values.
+			for($i = 0; $i < count($route); $i++) {
+				if($route[$i] == '*') {
+					$new_params[] = $params[$i];
+				}
+			}			
+			return $new_params;			
+		}
+					
 	}
 }

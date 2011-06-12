@@ -1,3 +1,4 @@
+<pre>
 <?php
     include('routes.php');  
 
@@ -8,10 +9,10 @@
     });
 	
 	Rout::get('alert/*', function($params) {
-		echo('ALERT!');
+		var_dump($params);
 	});
 	
-	function test_function() {
-		echo('Hello, World');
+	function test_function($params) {
+		echo("Hello, World.");
 	}
 ?>
