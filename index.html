@@ -1,77 +1,72 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
-
-  <title>Seich/Routs @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #6ab526;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #ffffff;
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>PHP Routs by Seich</title>
+		
+		<link type="text/css" rel="stylesheet" href="style.css" />
+		<link type="text/css" rel="stylesheet" href="google-code-prettify/prettify.css" />		
+	</head>
+	<body onload="prettyPrint()">
+		<a href="http://github.com/Seich/Routs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+		<div id="main">
+			<h1>PHP Routs</h1>
+	
+			<p>It's named that because I can't spell.</p>
+			<p>Routs is a small framework for handling PHP routes. It uses a little apache magic and some PHP stuff to work.</p>
+			<p>For example, if you wanted to have fancy routes for sending pms in your app you could do:</p>
+			<pre><code class="prettyprint">Rout::get('/to/', function($params){
+	//send awesome pm stuff.
+});</code></pre> 	
+			
+			<p>The pre would be executed on:</p>
+	
+			<pre><code>http://example.com/seich/to/steeldragon</code></pre> 
+	
+			<p>You could also use it to have multiple pages:</p>
+	
+			<pre><code class="prettyprint">Rout::get('*', function($params){
+    if($params[0] == 'about') {
+        //show my cool about me page.
     }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #954ad9; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #954ad9; }
-    h3 { text-align: center; color: #954ad9; }
-    a { color: #954ad9; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+});</code></pre>	
+			
+			<p>In this case any URL would be valid as long as the path was only one level deep.</p>
+	
+			<p>So, any of these would be valid:</p>
+			<pre><code>http://example.com/about
+http://example.com/contact-me</code></pre>
+			
+			<p>In this case I am using a single function and using conditional statements but, you could also use multiple function calls.</p>
+	
+			<pre><code class="prettyprint">Rout::get('about', function($params){
+    //show about me page
+});
 
-<body>
-  <a href="http://github.com/Seich/Routs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+Rout::get('contact', function($params){
+    //show contact page
+});</code></pre>
+			
+			<p>Both of the previous URLs would work.</p>
+	
+			<p>You can also use the name of a function instead of typing it directly, like this:</p>
+	
+			<pre><code class="prettyprint">Rout::get('*', 'test_function');
 
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/Seich/Routs/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/Seich/Routs/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/Seich/Routs">Routs</a>
-      <span class="small">by <a href="http://github.com/Seich">Seich</a></span></h1>
-
-    <div class="description">
-      A small PHP framework for handling URL routes.
-    </div>
-
-    <h2>Authors</h2>
-<p>Sergio Díaz (sergiooreamhyn@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Sergio Díaz (sergiooreamhyn@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/Seich/Routs/zipball/master">zip</a> or
-      <a href="http://github.com/Seich/Routs/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/Seich/Routs</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/Seich/Routs">Seich/Routs</a>
-    </div>
-
-  </div>
-
-  
-</body>
+function test_function($params) {
+	echo('Hello, World');
+}</code></pre>
+			
+			<p>I am currently working on adding settings, when done, you'll be able to do this:</p>
+	
+			<pre><code class="prettyprint"> Rout::get('*', 'someFunction', array('browser' => 'chrome');
+Rout::get('*', 'otherFunction', array('browser' => 'android');
+			</code></pre>
+			
+			<p>I'll also add support for all of the http basic methods, POST, PUT and, DELETE.</p>
+			<hr>
+			<div id="footer">Sergio Díaz © All Rights Reserved.</div>
+		</div>
+		<script type="text/javascript" src="google-code-prettify/prettify.js"></script>
+	</body>
 </html>
