@@ -47,12 +47,3 @@ You can also use the name of a function instead of typing it directly, like this
     function test_function($params) {
         echo('Hello, World');
     }
-
-I am currently working on adding settings, when done, you'll be able to do this:
-
-    Rout::get('*', 'someFunction', array('browser' => 'chrome');
-
-    Rout::get('*', 'otherFunction', array('browser' => 'android');
-
-I'll also add support for all of the http basic methods, POST, PUT and, DELETE.
-

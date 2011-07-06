@@ -36,20 +36,44 @@ class Rout
 {
     
     /**
-     * This function handles GET requests for the specified route.
+     * This function handles requests for the specified route.
      *
-	 * @param string $route The route to be handled by this function.
-	 * @param callback $callback The function to be executed when the 
-	 * @param array $settings An array containing additional configurations.
-	 * 
+     * @param string $name The name determines the type of the current request.
+	 * @param array $arguments The passed arguments should be the route and the callback.
+     * 
      * @return void
      **/
-    public static function get($route, $callback, $settings = null) 
-    {
-        if($_SERVER['REQUEST_METHOD'] != 'GET') return false; // Ignore request if it's not a get call.
+    public static function __callStatic($name, $arguments) {
+        
+        switch($name) {
+            case 'GET':
+            case 'get':
+                $requestType = 'GET';
+                break;
+            case 'POST':
+            case 'post':
+                $requestType = 'POST';
+                break;
+            case 'PUT':
+            case 'put':
+                $requestType = 'PUT';
+                break;
+            case 'DELETE':
+            case 'delete':
+                $requestType = 'DELETE';
+                break;     
+            default:
+                return false; //It's not a valid request type and thus, not a valid function.
+                break;
+        }
+        
+        $route = $arguments[0];
+        $callback = $argumemts[1];
+        
+        if($_SERVER['REQUEST_METHOD'] != $requestType) return false; // Ignore request if it's not the same type.
         if(!self::matchRoute($route)) return false; // Ignore request if the route doesn't match.
-		if(!self::runCallback($route, $callback, $settings)) return false; // Return false if the callback couldn't be executed because of settings.
-   	}
+        return self::runCallback($route, $callback); // execute the provided callback and return it's result.
+    }
 	
 	/**
 	 * This function checks if the called route is the same as the one provided.
@@ -87,21 +111,16 @@ class Rout
 	/**
 	 * This function gets the current url params and if all settings are true, executes the provided callback.
 	 *
-	 * @param callback $callback This function to be executed.
-	 * @param array $settings The conditions on which the function must be executed.
+     * @param string $route The route to extract the parameters from.
+	 * @param callback $callback The function to be executed.
 	 * 
 	 * @return void
 	 */
-	private static function runCallback($route, $callback, $settings) 
+	private static function runCallback($route, $callback) 
 	{
 		$params = self::getParams($route);
 		
-		if($settings == null) {
-			$callback($params); // If there are no particular settings.		
-		} else {
-			//TODO Check settings.			
-			$callback($params);
-		}
+		$callback($params); // Execute callback.
 	}
 	
 	/**
