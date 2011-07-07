@@ -12,10 +12,10 @@
 		<div id="main">
 			<h1>PHP Routs</h1>
 	
-			<p>It's named that because I can't spell.</p>
+			<p>It's named that because, I can't spell.</p>
 			<p>Routs is a small framework for handling PHP routes. It uses a little apache magic and some PHP stuff to work.</p>
 			<p>For example, if you wanted to have fancy routes for sending pms in your app you could do:</p>
-			<pre><code class="prettyprint">Rout::get('/to/', function($params){
+			<pre><code class="prettyprint">Rout::get('*/to/*', function($params){
 	//send awesome pm stuff.
 });</code></pre> 	
 			
@@ -57,13 +57,17 @@ function test_function($params) {
 	echo('Hello, World');
 }</code></pre>
 			
-			<p>I am currently working on adding settings, when done, you'll be able to do this:</p>
+			<p>I am currently working on adding conditions, when done, you'll be able to do this:</p>
 	
 			<pre><code class="prettyprint"> Rout::get('*', 'someFunction', array('browser' => 'chrome');
 Rout::get('*', 'otherFunction', array('browser' => 'android');
 			</code></pre>
 			
-			<p>I'll also add support for all of the http basic methods, POST, PUT and, DELETE.</p>
+			<p>You can also use POST, PUT and, DELETE.</p>
+            <pre><code class="prettyprint"> Rout::post('*', 'someFunction');
+Rout::put('*', 'someFunction');
+Rout::delete('*', 'someFunction');
+    		</code></pre>
 			<hr>
 			<div id="footer">Sergio Díaz © All Rights Reserved.</div>
 		</div>
