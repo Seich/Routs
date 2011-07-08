@@ -68,7 +68,7 @@ class Rout
         }
         
         $route = $arguments[0];
-        $callback = $argumemts[1];
+        $callback = $arguments[1];
         
         if($_SERVER['REQUEST_METHOD'] != $requestType) return false; // Ignore request if it's not the same type.
         if(!self::matchRoute($route)) return false; // Ignore request if the route doesn't match.
