@@ -44,28 +44,10 @@ class Rout
      * @return void
      **/
     public static function __callStatic($name, $arguments) {
-        
-        switch($name) {
-            case 'GET':
-            case 'get':
-                $requestType = 'GET';
-                break;
-            case 'POST':
-            case 'post':
-                $requestType = 'POST';
-                break;
-            case 'PUT':
-            case 'put':
-                $requestType = 'PUT';
-                break;
-            case 'DELETE':
-            case 'delete':
-                $requestType = 'DELETE';
-                break;     
-            default:
-                return false; //It's not a valid request type and thus, not a valid function.
-                break;
-        }
+       	
+        $requestType = strtoupper($name);
+       	if (!in_array($requestType, array('GET', 'POST', 'PUT', 'DELETE')))
+            return false;
         
         $route = $arguments[0];
         $callback = $arguments[1];
